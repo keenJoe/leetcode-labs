@@ -11,6 +11,7 @@ class TreeNode:
 
 
 class Solution:
+    # 递归。
     def isValidBST(self, root: Optional[TreeNode]) -> bool:
         return self.dfs_is_valid_bst(root, float('-inf'), float('inf'))
     
@@ -22,3 +23,27 @@ class Solution:
                 and cur.val < max_val 
                 and self.dfs_is_valid_bst(cur.left, min_val, cur.val)
                 and self.dfs_is_valid_bst(cur.right, cur.val, max_val))
+    
+
+    # 迭代。如果用迭代，那么其实就是中序遍历，最后判断结果是否是递增的。
+    def isValidBST_iter(self, root: Optional[TreeNode]) -> bool:
+        if not root:
+            return True
+        
+        stack = []
+        stack.append(root)
+        pre = float('-inf')
+        while stack:
+            node = stack.pop()
+            if node:
+                if not node.left:
+                    if pre >= node.val:
+                        return False
+                    pre = node.val
+                    stack.append(node.right)
+                else:
+                    stack.append(node)
+                    stack.append(node.left)
+                    node.left = None
+
+        return True
