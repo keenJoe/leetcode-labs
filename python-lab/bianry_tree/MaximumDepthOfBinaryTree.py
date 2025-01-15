@@ -41,3 +41,23 @@ class Solution:
             if node.right:
                 stack.append((node.right, depth + 1))
         return max_depth
+
+    # 迭代。使用队列。其实就是层序遍历。
+    # 层序遍历的本质就是广度优先搜索（BFS），没完成一层，深度就加1。
+    def maxDepth_iter_queue(self, root: Optional[TreeNode]) -> int:
+        if not root:
+            return 0
+        
+        queue = []
+        queue.append(root)
+        max_depth = 0
+        while queue:
+            size = len(queue)
+            for _ in range(size):
+                node = queue.pop(0)
+                if node.left:
+                    queue.append(node.left)
+                if node.right:
+                    queue.append(node.right)
+            max_depth += 1
+        return max_depth
