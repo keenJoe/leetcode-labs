@@ -7,6 +7,17 @@ class Solution:
         # 初始化结果列表
         triangle = [1] * (rowIndex + 1)
         
+        for i in range(1, rowIndex + 1):
+            # 从后向前遍历更新当前行
+            for j in range(i - 1, 0, -1):
+                triangle[j] = triangle[j] + triangle[j - 1]
+        
+        return triangle
+
+    def getRow_old_2(self, rowIndex: int) -> List[int]:
+        # 初始化结果列表
+        triangle = [1] * (rowIndex + 1)
+        
         for row in range(rowIndex + 1):
             # 初始化当前行
             curr_row = [1] * (row + 1)
