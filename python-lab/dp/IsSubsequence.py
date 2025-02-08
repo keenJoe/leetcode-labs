@@ -45,9 +45,29 @@ class Solution:
             return False
                 
         return True
+    
+    def isSubsequence_1(self, s: str, t: str) -> bool:
+        # 空字符串是任何字符串的子序列
+        if len(s) == 0:
+            return True
+            
+        # 如果s长度大于t，一定不是子序列
+        if len(s) > len(t):
+            return False
+        
+        i = 0  # s的指针
+        j = 0  # t的指针
+        
+        while i < len(s) and j < len(t):
+            if s[i] == t[j]:
+                i += 1
+            j += 1
+        
+        # 如果i到达s的末尾，说明找到了所有字符
+        return i == len(s)
 
 
 if __name__ == "__main__":
     s = "aaaaaa"
     t = "bbaaaa"
-    print(Solution().isSubsequence(s, t))
+    print(Solution().isSubsequence_1(s, t))
