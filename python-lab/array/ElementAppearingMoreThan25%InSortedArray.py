@@ -10,6 +10,3 @@ class Solution:
             if arr[i] == arr[i + length // 4]:
                 return arr[i]
         return -1
-    
-    
-    
