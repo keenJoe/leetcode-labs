@@ -83,6 +83,30 @@ class Solution:
         backtrack()
         return res
     
+    # 使用visited数组来判断元素是否已经用过
+    def permute_4(self, nums: List[int]) -> List[List[int]]:
+        result = []
+        def backtrack(path, visited):
+            # 如果path的长度等于nums的长度，则将path加入到结果中:
+            if len(path) == len(nums):
+                result.append(path[:])
+                return
+            
+            # 遍历数组
+            for i in range(len(nums)):
+                if visited[i]:
+                    continue
+                visited[i] = True
+                path.append(nums[i])
+                backtrack(path, visited)
+                path.pop()
+                visited[i] = False
+        
+        backtrack([], [False] * len(nums))
+        return result
+
+    
+    
 if __name__ == "__main__":
     nums = [1,2,3]
     print(Solution().permute_3(nums))
