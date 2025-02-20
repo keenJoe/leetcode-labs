@@ -1,12 +1,8 @@
 # 47. Permutations II
 
-# 输入：nums = [1,1,2]
-# 输出：[[1,1,2],[1,2,1],[2,1,1]]
-
-# 输入：nums = [1,2,3]
-# 输出：[[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]
-
-# 有重复元素，需要去重
+'''
+    最重要的一点是如果两个数字相同，并且前一个数字没有被使用，那么第二个数字不能被使用，需要跳过；
+'''
 
 from typing import List
 
@@ -17,11 +13,14 @@ class Solution:
         nums.sort()
         
         def backtrack(path, visited):
+            print("***************")
+            print(path, visited)
             if len(path) == len(nums):
                 result.append(path[:])
                 return
             
             for i in range(len(nums)):
+                print(i, nums[i], visited[i])
                 if visited[i]:
                     continue
                 
@@ -34,6 +33,8 @@ class Solution:
                 backtrack(path, visited)
                 path.pop()
                 visited[i] = False
+                print("pop: " + str(i), str(path), visited)
+                print('--------------------------------')
         
         backtrack([], [False] * len(nums))
         return result
