@@ -36,6 +36,31 @@ class Solution:
                 
         backtrack([], 0)
         return result
+    
+    
+    # 2、回溯法，提前剪枝，避免重复计算
+    def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
+        result = []
+        candidates.sort()  # 保持排序，便于剪枝
+        
+        def backtrack(path, start, remain):
+            # 剪枝：如果当前数字已经大于剩余目标值，后面的数字更大，直接break，不需要之前的两个if判断
+            if remain == 0:  # 使用remain代替sum(path)
+                result.append(path[:])
+                return
+            
+            for i in range(start, len(candidates)):
+                # 剪枝：如果当前数字已经大于剩余目标值，后面的数字更大，直接break
+                if candidates[i] > remain:
+                    break
+                    
+                path.append(candidates[i])
+                # remain - candidates[i] 传递剩余值，避免重复计算sum
+                backtrack(path, i, remain - candidates[i])
+                path.pop()
+                
+        backtrack([], 0, target)
+        return result
 
 if __name__ == "__main__":
     candidates = [2,3,6,7]
