@@ -73,6 +73,30 @@ class Solution:
         
         backtrack(s, 0, [])
         return min_cuts
+    
+    def minCut(self, s: str) -> int:
+        n = len(s)
+        
+        # 预处理回文信息
+        is_pal = [[False] * n for _ in range(n)]
+        for i in range(n):
+            is_pal[i][i] = True
+        for i in range(n-1):
+            is_pal[i][i+1] = (s[i] == s[i+1])
+        for length in range(3, n+1):
+            for i in range(n-length+1):
+                j = i + length - 1
+                is_pal[i][j] = (s[i] == s[j]) and is_pal[i+1][j-1]
+        
+        # dp[i]表示s[0:i]的最小切割次数
+        dp = [i for i in range(-1, n)]
+        
+        for i in range(1, n+1):
+            for j in range(i):
+                if is_pal[j][i-1]:
+                    dp[i] = min(dp[i], dp[j] + 1)
+        
+        return dp[n]
 
 
 if __name__ == "__main__":
