@@ -8,6 +8,7 @@ class Solution:
         result = []
         
         def backtrack(start, path):
+            # 每一步都收集结果，任何路径都是子集，所以都要加入到结果中
             result.append(path[:])
             
             for i in range(start, len(nums)):
