@@ -17,19 +17,14 @@ class Solution:
         
         def backtrack(start, path):
             result.append(path[:])  # 把当前路径加入结果集
-            print(result)
-            print(start)
-            print('--------------------------------')
             
             for i in range(start, len(nums)):
                 # 跳过重复元素，但要保留第一个
                 if i > start and nums[i] == nums[i-1]:
                     continue
                 path.append(nums[i])
-                print(path)
                 backtrack(i + 1, path)  # 递归
                 path.pop()  # 回溯，移除最后添加的元素
-                print("pop: " + str(path))
         
         backtrack(0, [])
         return result
