@@ -34,6 +34,46 @@ class Solution:
 
         backtrack(1, n)
         return res
+    
+    # 剪枝优化
+    def combinationSum3(self, k: int, n: int) -> List[List[int]]:
+        # 特判：快速处理无效情况
+        if k <= 0 or n <= 0 or k > 9 or n > 45:  # 45是1-9的和
+            return []
+        if k == 9 and n != 45:  # 如果需要9个数，和只能是45
+            return []
+        
+        res = []
+        path = []
+        
+        def backtrack(start: int, remain: int, count: int):
+            # 剪枝：剩余数字不够凑成k个 或 remain小于0
+            if remain < 0 or count > k:
+                return
+            # 找到符合条件的组合
+            if count == k and remain == 0:
+                res.append(path[:])
+                return
+                
+            # 优化搜索范围：考虑剩余需要的数字个数
+            # 确保剩余的数字足够多，且不会超过9
+            remain_count = k - count
+            if 10 - start < remain_count:
+                return
+                
+            for i in range(start, min(remain + 1, 10)):
+                # 剪枝：如果剩余的数全取最大值也不够，或全取最小值也太大，直接返回
+                max_possible = (19 - remain_count + i) * remain_count // 2
+                min_possible = (i + i + remain_count - 1) * remain_count // 2
+                if remain > max_possible or remain < min_possible:
+                    break
+                    
+                path.append(i)
+                backtrack(i + 1, remain - i, count + 1)
+                path.pop()
+        
+        backtrack(1, n, 0)
+        return res
 
 if __name__ == "__main__":
     s = Solution()
