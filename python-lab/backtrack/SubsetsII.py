@@ -29,6 +29,26 @@ class Solution:
         backtrack(0, [])
         return result
     
+    
+    def subsetsWithDup_1(self, nums: List[int]) -> List[List[int]]:
+        result = []
+        nums.sort()
+        
+        def backtrack(start, path):
+            # 终止条件
+            result.append(path[:])
+            
+            for i in range(start, len(nums)):
+                # i > start 表示当前元素不是第一个元素，nums[i] == nums[i-1] 表示当前元素和前一个元素相同，则跳过
+                if i > start and nums[i] == nums[i-1]:
+                    continue
+                path.append(nums[i])
+                backtrack(i + 1,path)
+                path.pop()
+        
+        backtrack(0, [])
+        return result
+    
 if __name__ == "__main__":
     nums = [1,2,2]
     print(Solution().subsetsWithDup(nums))
