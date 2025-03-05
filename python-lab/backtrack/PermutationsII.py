@@ -13,14 +13,11 @@ class Solution:
         nums.sort()
         
         def backtrack(path, visited):
-            print("***************")
-            print(path, visited)
             if len(path) == len(nums):
                 result.append(path[:])
                 return
             
             for i in range(len(nums)):
-                print(i, nums[i], visited[i])
                 if visited[i]:
                     continue
                 
@@ -33,8 +30,6 @@ class Solution:
                 backtrack(path, visited)
                 path.pop()
                 visited[i] = False
-                print("pop: " + str(i), str(path), visited)
-                print('--------------------------------')
         
         backtrack([], [False] * len(nums))
         return result
