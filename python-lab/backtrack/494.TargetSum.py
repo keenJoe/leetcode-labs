@@ -42,7 +42,14 @@ class Solution:
         return result
     
     def findTargetSumWays(self, nums: List[int], target: int) -> int:
+        # 使用字典缓存结果
+        memo = {}
+        
         def backtrack(index, current_sum):
+            # 检查是否已计算过
+            if (index, current_sum) in memo:
+                return memo[(index, current_sum)]
+            
             if index == len(nums):
                 return 1 if current_sum == target else 0
             
@@ -51,7 +58,9 @@ class Solution:
             # 选择减号
             minus = backtrack(index + 1, current_sum - nums[index])
             
-            return plus + minus
+            # 缓存结果
+            memo[(index, current_sum)] = plus + minus
+            return memo[(index, current_sum)]
         
         return backtrack(0, 0)
     
