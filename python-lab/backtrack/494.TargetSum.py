@@ -64,6 +64,30 @@ class Solution:
         
         return backtrack(0, 0)
     
+    
+    def findTargetSumWays(self, nums: List[int], target: int) -> int:
+        total = sum(nums)
+        
+        # 边界条件检查
+        if abs(target) > total or (target + total) % 2 != 0:
+            return 0
+        
+        # 计算需要凑成的正数和
+        pos_sum = (target + total) // 2
+        
+        # dp[j]表示凑成和为j的方法数
+        dp = [0] * (pos_sum + 1)
+        dp[0] = 1  # 空集的和为0，只有1种方法
+        
+        # 遍历每个数字
+        for num in nums:
+            # 从后往前遍历可能的和
+            for j in range(pos_sum, num - 1, -1):
+                # 状态转移：不选num的方法数 + 选num的方法数
+                dp[j] += dp[j - num]
+        
+        return dp[pos_sum]
+    
 if __name__ == "__main__":
     solution = Solution()
     print(solution.findTargetSumWays1([1,1,1,1,1], 3))
