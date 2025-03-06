@@ -45,8 +45,6 @@ class Solution:
         # 处理特殊情况
         if n == 0:
             return 1  # 只有0
-        if n == 1:
-            return 10
         
         # 初始化结果为1位数的情况
         result = 10
@@ -69,6 +67,8 @@ class Solution:
     def countNumbersWithUniqueDigits(self, n: int) -> int:
         if n == 0:
             return 1
+        if n == 1:
+            return 10
         
         # 使用回溯法计算
         self.count = 1  # 初始值为1，表示只有0的情况
