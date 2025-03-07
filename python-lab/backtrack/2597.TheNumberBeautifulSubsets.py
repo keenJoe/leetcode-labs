@@ -41,6 +41,35 @@ class Solution:
         
         backtrack(0)
         return ans - 1  # 减去空集
+    
+    def beautifulSubsets1(self, nums: List[int], k: int) -> int:
+        # 使用哈希表记录已选数字
+        used = {}
+        
+        def backtrack(index):
+            if index == len(nums):
+                return 1  # 找到一个合法子集
+            
+            # 不选择当前数字
+            total = backtrack(index + 1)
+            
+            # 检查是否可以选择当前数字
+            num = nums[index]
+            can_use = True
+            if num + k in used and used[num + k] > 0:
+                can_use = False
+            if num - k in used and used[num - k] > 0:
+                can_use = False
+            
+            # 如果可以选择当前数字
+            if can_use:
+                used[num] = used.get(num, 0) + 1
+                total += backtrack(index + 1)
+                used[num] -= 1
+                
+            return total
+        
+        return backtrack(0) - 1  # 减去空集
 
 if __name__ == "__main__":
     solution = Solution()
