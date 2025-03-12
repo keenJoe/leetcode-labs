@@ -3,48 +3,34 @@
 from typing import List
 
 '''
-    1、问题1：是不是需要遍历的长度  = 2 * n，还是生成两个数组，然后遍历两个数组
+    数字 n 代表生成括号的对数，请你设计一个函数，用于能够生成所有可能的并且有效的括号组合。
+    1、终止条件：如果当前路径的长度等于2 * n，则将当前路径加入到结果中（当然，需要判断当前路径是否有效）
+    2、回溯条件：
+        1、如果左括号小于n，则可以添加左括号
+        2、如果右括号小于左括号，则可以添加右括号
+        
+    没有使用for循环，因为选择的范围是确定的，就是左括号和右括号，所以不需要for循环
+    其次，其他需要for循环因为需要遍历，但是这里不需要，因为左括号和右括号是确定的
 '''
 
 
 class Solution:
     def generateParenthesis(self, n: int) -> List[str]:
-        result = []
+        res = []
         
-        def backtrack(left: int, right: int, path: str):
+        def backtrack(left, right, path):
             if len(path) == 2 * n:
-                result.append(path)
-                return
+                res.append(path)
+                return 
             
             if left < n:
                 backtrack(left + 1, right, path + '(')
-            
             if right < left:
                 backtrack(left, right + 1, path + ')')
                 
+
         backtrack(0, 0, '')
-        return result
-    
-class Solution:
-    def generateParenthesis(self, n: int) -> List[str]:
-        result = []
-        def backtrack(left: int, right: int, current: List[str]):
-            if len(current) == 2 * n:
-                result.append(''.join(current))
-                return
-            
-            if left < n:
-                current.append('(')  # 添加左括号
-                backtrack(left + 1, right, current)
-                current.pop()  # 需要pop，因为修改了current
-            
-            if right < left:
-                current.append(')')  # 添加右括号
-                backtrack(left, right + 1, current)
-                current.pop()  # 需要pop，因为修改了current
-    
-        backtrack(0, 0, [])
-        return result
+        return res
     
 
 if __name__ == "__main__":
