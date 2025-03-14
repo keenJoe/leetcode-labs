@@ -14,6 +14,11 @@ class Solution:
         
         # 检查是否平衡
         return even_sum == odd_sum
+    
+    def isBalanced(self, num: str) -> bool:
+        even_sum = sum(int(digit) for i, digit in enumerate(num) if i % 2 == 0)
+        odd_sum = sum(int(digit) for i, digit in enumerate(num) if i % 2 == 1)
+        return even_sum == odd_sum
         
 
 if __name__ == "__main__":
