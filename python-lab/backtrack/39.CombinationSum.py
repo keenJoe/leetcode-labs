@@ -11,6 +11,24 @@
     5、回溯，移除最后一个元素
     6、重复3-5，直到所有元素都用过一次
     7、返回结果
+    
+    
+    给你一个 无重复元素 的整数数组 candidates 和一个目标整数 target ，找出 candidates 中可以使数字和为目标数 target 的 所有 不同组合 ，并以列表形式返回。你可以按 任意顺序 返回这些组合。
+
+    candidates 中的 同一个 数字可以 无限制重复被选取 。如果至少一个数字的被选数量不同，则两种组合是不同的。 
+
+    对于给定的输入，保证和为 target 的不同组合数少于 150 个。
+    
+    
+    终止条件：
+        如果当前路径和等于target，则将路径加入结果中，并返回
+        如果当前路径和大于target，则跳过该元素，继续选择下一个元素，触发回溯
+    遍历每一个元素
+    选择当前元素，加入路径中
+    递归，开始选择下个元素
+    回溯，移除最后一个元素
+    重复3-5，直到所有元素都用过一次
+    返回结果
 '''
 
 from typing import List
@@ -21,45 +39,26 @@ class Solution:
         result = []
         candidates.sort()
         
-        def backtrack(path, start):
-            if sum(path) == target:
+        def backtrack(start, path, remain):
+            if remain == 0:
                 result.append(path[:])
                 return
             
-            if sum(path) > target:
+            # 剪枝，如果当前路径和大于target，则跳过该元素，继续选择下一个元素，触发回溯
+            if remain < 0:
                 return
             
             for i in range(start, len(candidates)):
-                path.append(candidates[i])
-                backtrack(path, i)
-                path.pop()
-                
-        backtrack([], 0)
-        return result
-    
-    
-    # 2、回溯法，提前剪枝，避免重复计算
-    def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
-        result = []
-        candidates.sort()  # 保持排序，便于剪枝
-        
-        def backtrack(path, start, remain):
-            # 剪枝：如果当前数字已经大于剩余目标值，后面的数字更大，直接break，不需要之前的两个if判断
-            if remain == 0:  # 使用remain代替sum(path)
-                result.append(path[:])
-                return
-            
-            for i in range(start, len(candidates)):
-                # 剪枝：如果当前数字已经大于剩余目标值，后面的数字更大，直接break
+                # 提前剪枝，如果当前元素大于remain，则跳过该元素，继续选择下一个元素
                 if candidates[i] > remain:
                     break
-                    
-                path.append(candidates[i])
-                # remain - candidates[i] 传递剩余值，避免重复计算sum
-                backtrack(path, i, remain - candidates[i])
-                path.pop()
                 
-        backtrack([], 0, target)
+                path.append(candidates[i])
+                # 不需要i+1，因为可以重复选择同一个元素，可以无限选择
+                backtrack(i, path, remain - candidates[i])
+                path.pop()
+            
+        backtrack(0, [], target)
         return result
 
 if __name__ == "__main__":
