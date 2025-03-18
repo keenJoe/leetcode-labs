@@ -45,6 +45,7 @@ class Solution:
                 else:
                     stack.append(node)
                     stack.append(node.left)
+                    # 防止重复访问，这个节点已经访问过
                     node.left = None
 
         return res
@@ -66,6 +67,33 @@ class Solution:
             root = root.right
 
         return res
+    
+    # 方法2：节点标记法
+    def inorderTraversal2(self, root: Optional[TreeNode]) -> List[int]:
+        if not root:
+            return []
+            
+        result = []
+        stack = [(root, False)]  # (节点, 是否已访问)
+        
+        while stack:
+            node, visited = stack.pop()
+            
+            if visited:
+                # 如果节点已被访问过，直接添加到结果
+                result.append(node.val)
+            else:
+                # 中序：右->根->左，压栈后变成左->根->右
+                if node.right:
+                    stack.append((node.right, False))
+                    
+                # 标记根节点为已访问，再次入栈
+                stack.append((node, True))
+                
+                if node.left:
+                    stack.append((node.left, False))
+                    
+        return result
     
     # Morris遍历，O(1)空间复杂度
     # 这个方法和迭代方法类似，但是Morris不再使用栈，那么当根节点的左右节点都为空，需要回到根节点，然后开始遍历右节点。但是因为当前节点的左节点不为空，会继续遍历左节点。这样就会形成一个环。
@@ -95,3 +123,29 @@ class Solution:
                     cur = cur.right
 
         return res
+
+    # 方法4：使用颜色标记法（统一处理前序、中序、后序）
+    def inorderTraversal4(self, root: Optional[TreeNode]) -> List[int]:
+        if not root:
+            return []
+            
+        WHITE, GRAY = 0, 1  # WHITE表示首次访问，GRAY表示再次访问
+        result = []
+        stack = [(WHITE, root)]
+        
+        while stack:
+            color, node = stack.pop()
+            
+            if not node:
+                continue
+                
+            if color == WHITE:
+                # 中序：右->根->左，压栈后变成左->根->右
+                stack.append((WHITE, node.right))
+                stack.append((GRAY, node))  # 将节点设为GRAY，再次访问时处理
+                stack.append((WHITE, node.left))
+            else:
+                # GRAY节点直接访问
+                result.append(node.val)
+                
+        return result
