@@ -1,7 +1,11 @@
 # 144. Binary Tree Preorder Traversal
 
+"""
+前序遍历：根节点 -> 左子树 -> 右子树
+1、递归
+2、使用栈进行迭代
+"""
 
-# 前序遍历：根节点 -> 左子树 -> 右子树
 # Definition for a binary tree node.
 from typing import List, Optional
 
@@ -92,4 +96,9 @@ class Solution:
                     root = root.right
 
         return res
+        
+if __name__ == "__main__":
+    s = Solution()
+    root = TreeNode(1, None, TreeNode(2, TreeNode(3, None, None), None))
+    print(s.preorderTraversal(root))
 
