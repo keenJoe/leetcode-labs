@@ -42,6 +42,44 @@ class Solution:
             if num % i == 0:
                 return False
         return True
+    
+    
+class Solution:
+    def diagonalPrime(self, nums: List[List[int]]) -> int:
+        n = len(nums)  # 假设输入是方阵
+        max_prime = 0
+        
+        # 只遍历对角线元素
+        for i in range(n):
+            # 主对角线
+            if self.isPrime(nums[i][i]):
+                max_prime = max(max_prime, nums[i][i])
+            
+            # 副对角线
+            if i != n-1-i and self.isPrime(nums[i][n-1-i]):  # 避免重复检查
+                max_prime = max(max_prime, nums[i][n-1-i])
+                
+        return max_prime
+    
+    # 优化的质数判断
+    def isPrime(self, num: int) -> bool:
+        # 快速筛选
+        if num <= 1:
+            return False
+        if num <= 3:
+            return num > 1
+        if num % 2 == 0 or num % 3 == 0:
+            return False
+        
+        # 只检查6k±1形式的数
+        i = 5
+        while i * i <= num:
+            if num % i == 0 or num % (i + 2) == 0:
+                return False
+            i += 6
+            
+        return True
+    
 if __name__ == "__main__":
     s = Solution()
     print(s.diagonalPrime([[1,2,3],[5,6,7],[9,10,11]]))
