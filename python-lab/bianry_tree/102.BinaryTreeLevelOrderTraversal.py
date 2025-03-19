@@ -2,6 +2,7 @@
 
 # Definition for a binary tree node.
 from typing import List, Optional
+from collections import deque
 
 
 class TreeNode:
@@ -52,3 +53,41 @@ class Solution:
         res[level].append(root.val)
         self.dfs_level_order(root.left, level + 1, res)
         self.dfs_level_order(root.right, level + 1, res)
+
+    # 方法2：使用层级标记
+    # 妙啊，将钱两种方式结合了
+    def levelOrder2(self, root: Optional[TreeNode]) -> List[List[int]]:
+        if not root:
+            return []
+        result = []
+        queue = deque([(root, 0)])
+        while queue:
+            node, level = queue.popleft()
+            if level == len(result):
+                result.append([])
+            result[level].append(node.val)
+            if node.left:
+                queue.append((node.left, level + 1))
+            if node.right:
+                queue.append((node.right, level + 1))
+        return result
+
+    # 方法3：使用两个队列交替，一个队列存储当前层级的节点，一个队列存储下一层级的节点
+    def levelOrder3(self, root: Optional[TreeNode]) -> List[List[int]]:
+        if not root:
+            return []
+        result = []
+        current_queue = deque([root])
+        next_queue = deque()
+        while current_queue:
+            level = []
+            while current_queue:
+                node = current_queue.popleft()
+                level.append(node.val)
+                if node.left:
+                    next_queue.append(node.left)
+                if node.right:
+                    next_queue.append(node.right)
+            result.append(level)
+            current_queue, next_queue = next_queue, current_queue
+        return result
