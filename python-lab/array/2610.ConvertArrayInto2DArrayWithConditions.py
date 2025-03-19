@@ -25,6 +25,22 @@ class Solution:
                 res[i].append(num)
         return res
     
+    def findMatrix(self, nums: List[int]) -> List[List[int]]:
+        # 使用计数数组而不是字典（因为1 <= nums[i] <= nums.length）
+        count = [0] * (len(nums) + 1)
+        result = []
+        
+        for num in nums:
+            # 如果当前数字的出现次数等于结果数组的长度，需要新增一行
+            if count[num] == len(result):
+                result.append([])
+            # 将数字添加到对应行
+            result[count[num]].append(num)
+            # 更新计数
+            count[num] += 1
+            
+        return result
+    
 if __name__ == "__main__":
     solution = Solution()
     nums = [1, 3, 4, 1, 2, 3, 1]
