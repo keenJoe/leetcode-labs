@@ -47,3 +47,22 @@ class Solution:
                     node.left = None
 
         return True
+    
+    def inorderTraversal_using_stack_2(self, root: Optional[TreeNode]) -> bool:
+        if not root:
+            return True
+        
+        stack = []
+        pre = float('-inf')
+        while stack or root:
+            while root:
+                stack.append(root)
+                root = root.left
+            
+            root = stack.pop()
+            if root.val <= pre:
+                return False
+            pre = root.val
+            root = root.right
+
+        return True
