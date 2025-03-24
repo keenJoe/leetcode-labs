@@ -3,6 +3,7 @@
 from typing import List
 
 class Solution:
+    # 动态规划，空间优化，直接存储当前行
     def getRow(self, rowIndex: int) -> List[int]:
         # 初始化结果列表
         triangle = [1] * (rowIndex + 1)
@@ -14,6 +15,7 @@ class Solution:
         
         return triangle
 
+    # 动态规划，使用一维数组存储当前行，并更新上一行
     def getRow_old_2(self, rowIndex: int) -> List[int]:
         # 初始化结果列表
         triangle = [1] * (rowIndex + 1)
@@ -31,6 +33,7 @@ class Solution:
         
         return triangle
     
+    # 动态规划，使用二维数组存储所有元素，最后返回最后一行
     def getRow_old(self, rowIndex: int) -> List[int]:
         # 初始化结果列表
         triangle = []
