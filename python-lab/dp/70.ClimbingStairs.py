@@ -3,6 +3,7 @@
 from typing import List
 
 class Solution:
+    # 递归
     def climbStairs(self, n: int) -> int:
         # 基本情况
         if n <= 2:
@@ -10,7 +11,7 @@ class Solution:
         # 递归：f(n) = f(n-1) + f(n-2)
         return self.climbStairs(n-1) + self.climbStairs(n-2)
     
-
+    # 记忆化搜索
     def climbStairs(self, n: int) -> int:
         memo = {}
         
@@ -24,6 +25,7 @@ class Solution:
         
         return dp(n)
     
+    # 动态规划，自顶向下
     def climbStairs(self, n: int) -> int:
         if n <= 2:
             return n
@@ -39,7 +41,7 @@ class Solution:
         
         return dp[n]
     
-
+    # 动态规划，自底向上，优化空间复杂度
     def climbStairs(self, n: int) -> int:
         if n <= 2:
             return n
