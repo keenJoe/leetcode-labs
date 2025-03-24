@@ -1,5 +1,11 @@
 # 121. Best Time to Buy and Sell Stock
 
+
+"""
+
+"""
+
+
 from typing import List
 
 class Solution:
@@ -59,3 +65,8 @@ class Solution:
             has_stock = max(has_stock, -prices[i])
             
         return no_stock
+    
+if __name__ == "__main__":
+    solution = Solution()
+    print(solution.maxProfit([7,6,5,4,3,2,1]))
+    print(solution.maxProfit([7,6,4,3,1]))
