@@ -36,6 +36,15 @@ class Solution:
     def divisorGame(self, n: int) -> bool:
         return n % 2 == 0
     
+    """
+    递归思想：
+        每一步都模拟双方的最优选择
+        如果能找到一种让对手必输的选择，就是必胜
+    最优策略：
+        如果当前玩家可以选择一个数x
+        使得对手在剩余数字(n-x)时必输
+        那么当前玩家就必胜
+    """
     # 方法2：记忆化递归（用于理解过程）
     def divisorGame2(self, n: int) -> bool:
         @lru_cache(None)
