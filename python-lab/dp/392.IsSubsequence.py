@@ -70,8 +70,6 @@ class Solution:
         # 如果i到达s的末尾，说明找到了所有字符
         return i == len(s)
     
-    
-    
     # 递归
     def isSubsequence_2(self, s: str, t: str) -> bool:
         def recursive(i, j):
@@ -89,6 +87,81 @@ class Solution:
             return recursive(i, j + 1)
         
         return recursive(0, 0)
+    
+
+    def isSubsequence(self, s: str, t: str) -> bool:
+        return self.dfs(s, t, 0, 0)
+
+    def dfs(self, s: str, t: str, i: int, j: int) -> bool:
+        if i == len(s):
+            return True
+        if j == len(t):
+            return False
+        
+        if s[i] == t[j]:
+            return self.dfs(s, t, i + 1, j + 1)
+        else:
+            return self.dfs(s, t, i, j + 1)
+        
+    # 从后向前填充dp数组，从递归改成dp
+    def isSubsequence_4(self, s: str, t: str) -> bool:
+        if len(s) == 0:
+            return True
+        if len(s) > len(t):
+            return False
+        
+        # dp[i][j] 表示 s[i:] 是否是 t[j:] 的子序列
+        dp = [[False] * (len(t) + 1) for _ in range(len(s) + 1)]
+        
+        # 空字符串是任何字符串的子序列
+        dp[len(s)][len(t)] = True
+        
+        # 初始化最后一列
+        for i in range(len(s)):
+            dp[i][len(t)] = False
+        
+        # 初始化最后一行
+        for j in range(len(t)):
+            dp[len(s)][j] = True
+        
+        # 从后向前填充dp数组
+        for i in range(len(s) - 1, -1, -1):
+            for j in range(len(t) - 1, -1, -1):
+                if s[i] == t[j]:
+                    dp[i][j] = dp[i + 1][j + 1]
+                else:
+                    dp[i][j] = dp[i][j + 1]
+        
+        return dp[0][0]
+    
+    def isSubsequence_5(self, s: str, t: str) -> bool:
+        # 特殊情况：空字符串
+        if len(s) == 0:
+            return True
+        if len(s) > len(t):
+            return False
+        
+        # dp[i][j] 表示 s[i:] 是否是 t[j:] 的子序列
+        # 现在只考虑非空字符串的情况
+        dp = [[False] * len(t) for _ in range(len(s))]
+        
+        # 初始化第一行：s的第一个字符和t的每个字符比较
+        for j in range(len(t)):
+            if s[0] == t[j]:
+                dp[0][j] = True
+            elif j > 0:
+                dp[0][j] = dp[0][j-1]
+        
+        # 填充其余部分
+        for i in range(1, len(s)):
+            for j in range(i, len(t)):
+                if s[i] == t[j]:
+                    dp[i][j] = dp[i-1][j-1]
+                elif j > 0:
+                    dp[i][j] = dp[i][j-1]
+        
+        return dp[len(s)-1][len(t)-1]
+
     
     def isSubsequence(self, s: str, t: str) -> bool:
         @lru_cache(None)  # 使用Python的内置缓存装饰器
