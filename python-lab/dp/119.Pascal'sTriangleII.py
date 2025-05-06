@@ -52,3 +52,7 @@ class Solution:
 if __name__ == "__main__":
     solution = Solution()
     print(solution.getRow(3))
+    # i = 2
+    # for j in range(i - 1, 0, -1):
+    #     print(j)
+    # print("当前遍历的：{}".format(i))

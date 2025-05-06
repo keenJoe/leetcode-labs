@@ -11,30 +11,16 @@
 from typing import List
 
 class Solution:
-    # def generate(self, numRows: int) -> List[List[int]]:
-    #     # 初始化结果列表
-    #     triangle = []
-        
-    #     for row in range(numRows):
-    #         # 初始化当前行
-    #         curr_row = [1] * (row + 1)
-    #         # 填充当前行的中间元素
-    #         for j in range(1, row):
-    #             print(j)
-    #             curr_row[j] = triangle[row-1][j-1] + triangle[row-1][j]
-                
-    #         triangle.append(curr_row)
-        
-    #     return triangle
-    
     # 动态规划，二维数组
     def generate1(self, numRows: int) -> List[List[int]]:
         # 初始化二维数组，每个位置都是1
         array = [[1] * i for i in range(1, numRows + 1)]
-        # print(array)
+        print(array)
         
         # 填充中间的元素
+        # 从第三行开始，每个位置的值等于上一行的前一列和当前列的和
         for i in range(2, numRows):
+            # 从第二列开始，每个位置的值等于上一行的前一列和当前列的和
             for j in range(1, i):
                 array[i][j] = array[i-1][j-1] + array[i-1][j]
         return array
@@ -49,6 +35,8 @@ class Solution:
         for i in range(numRows):
             # 初始化当前行
             current_row = [1] * (i + 1)
+            # 从第二列开始，每个位置的值等于上一行的前一列和当前列的和
+            # 当 i= 0 和 i= 1 时，不需要填充中间的元素，从i=2开始才开始填充
             for j in range(1, i):
                 current_row[j] = res[i-1][j-1] + res[i-1][j]
             res.append(current_row)
@@ -57,4 +45,4 @@ class Solution:
 
 if __name__ == "__main__":
     solution = Solution()
-    print(solution.generate(5))
+    print(solution.generate1(5))
