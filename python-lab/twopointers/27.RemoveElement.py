@@ -46,6 +46,7 @@ class Solution:
     
     
     # 使用快慢指针，会覆盖元素，但是不会改变元素的顺序
+    # 找到不等于val的元素，然后覆盖nums[slow]，slow++。最后返回slow，slow即为不等于val的元素的数量
     def removeElement1(self, nums: List[int], val: int) -> int:
         # 使用快慢指针
         slow = 0
