@@ -28,6 +28,8 @@ from typing import List
 
 
 class Solution:
+    # 从后向前遍历，将nums2的元素插入到nums1的末尾
+    # 这个非常重要！！！
     def merge(self, nums1: List[int], m: int, nums2: List[int], n: int) -> None:
         # 初始化三个指针
         p1 = m - 1  # nums1的有效元素指针
