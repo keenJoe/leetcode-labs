@@ -16,6 +16,12 @@ class Solution:
             left += 1
             right -= 1
 
+    def reverseString(self, s: List[str]) -> None:
+        """
+        Do not return anything, modify s in-place instead.
+        """
+        s[:] = s[::-1]
+
 if __name__ == "__main__":
     solution = Solution()
     s = ["h", "e", "l", "l", "o"]
