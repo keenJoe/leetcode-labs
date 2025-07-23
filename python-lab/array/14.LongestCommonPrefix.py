@@ -26,7 +26,7 @@ from typing import List
 
 
 class Solution:
-    def longestCommonPrefix(self, strs: List[str]) -> str:
+    def longestCommonPrefix1(self, strs: List[str]) -> str:
         # 选取第一个字符串作为公共前缀
         for i in range(len(strs[0])):
             # 遍历其他字符串，开始进行比较
@@ -36,6 +36,23 @@ class Solution:
                     return strs[0][:i]
         # 如果遍历完所有字符串，则返回公共前缀
         return strs[0]
+    
+
+    def longestCommonPrefix(self, strs: List[str]) -> str:
+        if not strs:  # 空数组处理
+            return ""
+        
+        # 找到最短字符串长度，避免越界
+        min_len = min(len(s) for s in strs)
+        
+        for i in range(min_len):
+            char = strs[0][i]  # 当前比较的字符
+            for j in range(1, len(strs)):
+                if strs[j][i] != char:
+                    return strs[0][:i]
+        
+        print(min_len)
+        return strs[0][:min_len]
 
 
 if __name__ == "__main__":
