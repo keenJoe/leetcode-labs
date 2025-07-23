@@ -38,7 +38,7 @@ class Solution:
         return strs[0]
     
 
-    def longestCommonPrefix(self, strs: List[str]) -> str:
+    def longestCommonPrefix2(self, strs: List[str]) -> str:
         if not strs:  # 空数组处理
             return ""
         
@@ -53,6 +53,21 @@ class Solution:
         
         print(min_len)
         return strs[0][:min_len]
+    
+    def longestCommonPrefix(self, strs: List[str]) -> str:
+        if not strs:
+            return ""
+        
+        # 先找最短和最长字符串
+        min_str = min(strs)
+        max_str = max(strs)
+        
+        # 只需比较最短和最长字符串
+        for i in range(len(min_str)):
+            if min_str[i] != max_str[i]:
+                return min_str[:i]
+        
+        return min_str
 
 
 if __name__ == "__main__":
