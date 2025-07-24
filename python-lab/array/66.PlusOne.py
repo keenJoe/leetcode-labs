@@ -11,7 +11,7 @@ from typing import List
 
 
 class Solution:
-    def plusOne(self, digits: List[int]) -> List[int]:
+    def plusOne2(self, digits: List[int]) -> List[int]:
         new_digits = []
         carry = 0
         for i in range(len(digits) - 1, -1, -1):
@@ -32,6 +32,17 @@ class Solution:
         if carry:
             new_digits.append(1)
         return new_digits[::-1]
+    
+    def plusOne(self, digits: List[int]) -> List[int]:
+        # 从后往前遍历
+        for i in range(len(digits) - 1, -1, -1):
+            if digits[i] < 9:
+                digits[i] += 1
+                return digits
+            digits[i] = 0
+        
+        # 如果所有位都是9，需要在前面加1
+        return [1] + digits
 
 
 if __name__ == "__main__":
