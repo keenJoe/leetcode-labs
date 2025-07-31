@@ -82,6 +82,40 @@ class Solution:
             current = current.next
 
         return dummy_node.next
+    
+    def mergeKListsHeap(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
+        """
+        方法4：堆/优先队列法
+        
+        使用最小堆维护每个链表的当前最小节点
+        时间复杂度：O(N*log(k))
+        空间复杂度：O(k)
+        """
+        if not lists:
+            return None
+        
+        # 创建最小堆，存储 (节点值, 节点索引, 节点)
+        heap = []
+        
+        # 将每个链表的第一个节点加入堆
+        for i, head in enumerate(lists):
+            if head:
+                heapq.heappush(heap, (head.val, i, head))
+        
+        dummy = ListNode(0)
+        current = dummy
+        
+        while heap:
+            # 取出最小值节点
+            val, list_idx, node = heapq.heappop(heap)
+            current.next = node
+            current = current.next
+            
+            # 如果该链表还有下一个节点，将其加入堆
+            if node.next:
+                heapq.heappush(heap, (node.next.val, list_idx, node.next))
+        
+        return dummy.next
 
 
 if __name__ == "__main__":
