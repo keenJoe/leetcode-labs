@@ -22,19 +22,21 @@ class Solution:
         current = dummy_head
 
         carry = 0
-        while l1 or l2:
+        # 只要有一个链表没有结束，或者有进位，就继续遍历
+        while l1 or l2 or carry:
+            # 获取当前位的值，如果链表已经结束，则使用0
             val1 = l1.val if l1 else 0
             val2 = l2.val if l2 else 0
+            # 计算当前位的和，并更新进位
             sum = val1 + val2 + carry
             carry = sum // 10
-            current.next = ListNode(sum % 10)
+            digit = sum % 10
+            # 创建新节点并添加到结果链表
+            current.next = ListNode(digit)
             current = current.next
-            if l1:
-                l1 = l1.next
-            if l2:
-                l2 = l2.next
-        if carry > 0:
-            current.next = ListNode(carry)
+            # 移动到下一个节点（如果存在）
+            l1 = l1.next if l1 else None
+            l2 = l2.next if l2 else None
 
         return dummy_head.next
 
