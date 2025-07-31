@@ -45,7 +45,21 @@ class Solution:
     
     # 归并法
     def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
-        pass
+        if not lists:
+            return None
+        return self.mergeKListsHelper(lists, 0, len(lists) - 1)
+
+    def mergeKListsHelper(self, lists: List[Optional[ListNode]], left: int, right: int) -> Optional[ListNode]:
+        if left == right:
+            return lists[left]
+        if left > right:
+            return None
+        
+        mid = (left + right) // 2
+        left_list = self.mergeKListsHelper(lists, left, mid)
+        right_list = self.mergeKListsHelper(lists, mid + 1, right)
+
+        return self.mergetTwoList(left_list, right_list)
 
 
     def mergetTwoList(self, list1:Optional[ListNode], list2:Optional[ListNode]) -> Optional[ListNode]:
