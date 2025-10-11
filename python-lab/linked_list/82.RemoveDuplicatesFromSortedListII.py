@@ -48,6 +48,34 @@ class Solution:
 
         return dummy.next
             
+    # 更直观的实现方式
+    def deleteDuplicates2(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        if not head or not head.next:
+            return head
+        
+        dummy = ListNode(0, head)
+        # 命名也更加直观，而不是 slow 和 fast，容易产生误解
+        prev = dummy
+        curr = head
+        
+        while curr:
+            # 检查当前节点是否有重复
+            has_duplicate = False
+            while curr.next and curr.val == curr.next.val:
+                curr = curr.next
+                has_duplicate = True
+            
+            if has_duplicate:
+                # 有重复，跳过整个重复段
+                prev.next = curr.next
+            else:
+                # 无重复，保留当前节点
+                prev.next = curr
+                prev = prev.next
+            
+            curr = curr.next
+        
+        return dummy.next
 
 if __name__ == "__main__":
     solution = Solution()
