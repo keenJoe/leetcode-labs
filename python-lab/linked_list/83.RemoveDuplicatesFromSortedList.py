@@ -30,6 +30,16 @@ class Solution:
                 current = current.next
         return head
 
+    # 使用递归
+    def deleteDuplicates2(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        if not head or not head.next:
+            return head
+
+        # 默认deleteDuplicates2返回的内容是不包括重复元素，head.next后没有重复元素
+        head.next = self.deleteDuplicates2(head.next)
+
+        # 如果head.val == head.next.val，则返回head.next，否则返回head
+        return head.next if head.val == head.next.val else head
 
 if __name__ == "__main__":
     solution = Solution()
