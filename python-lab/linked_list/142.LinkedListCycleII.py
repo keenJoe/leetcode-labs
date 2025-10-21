@@ -37,6 +37,34 @@ class Solution:
             current = current.next
         return None
 
+    def detectCycleUsingTwoPointers(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        # 边界情况处理
+        if head is None or head.next is None:
+            return None
+        
+        slow = head
+        fast = head  # ✅ 两个指针都从 head 开始
+        
+        # 第一阶段：判断是否有环
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next
+            if slow == fast:  # 相遇说明有环
+                break
+        
+        # 如果没有环，返回 None
+        if fast is None or fast.next is None:
+            return None
+        
+        # 第二阶段：找环的入口
+        slow = head
+        while slow != fast:
+            slow = slow.next
+            fast = fast.next
+        
+        return slow
+
+
 if __name__ == "__main__":
     solution = Solution()
     head = ListNode(1)
@@ -46,3 +74,4 @@ if __name__ == "__main__":
     head.next.next.next.next = ListNode(5)
     head.next.next.next.next.next = head.next.next
     print(solution.detectCycleUsingSet(head).val)
+    print(solution.detectCycleUsingTwoPointers(head).val)
