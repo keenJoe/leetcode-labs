@@ -17,38 +17,44 @@ class ListNode:
 
 class Solution:
     def reorderList(self, head: Optional[ListNode]) -> None:
-        if head is None or head.next is None:
-            return 
+        if not head or not head.next:
+            return
         
-        slow = fast = head
-        while fast and fast.next:
+        # 步骤1：使用快慢指针找到链表中点
+        # slow最终会停在前半部分的最后一个节点
+        slow, fast = head, head
+        while fast.next and fast.next.next:
             slow = slow.next
             fast = fast.next.next
         
-        # 现在的 slow 就是中间点
-        second_head = slow.next
-        # 反转后半部分
-        after = None
-        current = second_head
-        while current:
-            next = current.next
-            current.next = after
-            after = current
-            current = next
-        second_head = after
-
+        # 步骤2：反转后半部分链表
+        # 将链表从中间断开
+        second = slow.next
         slow.next = None
-        first_head = head
-
-        while first_head and second_head:
-            first_next = first_head.next
-            second_next = second_head.next
-            first_head.next = second_head
-            second_head.next = first_next
-            first_head = first_next
-            second_head = second_next
         
-        return head
+        # 反转后半部分
+        prev = None
+        while second:
+            temp = second.next
+            second.next = prev
+            prev = second
+            second = temp
+        second = prev  # second 现在指向反转后链表的头节点
+        
+        # 步骤3：合并两个链表
+        first = head
+        while second:  # 只需要判断 second，因为后半部分长度 <= 前半部分
+            # 保存下一个节点
+            first_next = first.next
+            second_next = second.next
+            
+            # 交替连接
+            first.next = second
+            second.next = first_next
+            
+            # 移动指针
+            first = first_next
+            second = second_next
 
 
 if __name__ == "__main__":
