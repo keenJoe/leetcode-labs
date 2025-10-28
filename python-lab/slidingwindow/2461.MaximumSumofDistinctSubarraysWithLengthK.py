@@ -16,7 +16,7 @@
 
 '''
 
-from typing import List
+from typing import Counter, List
 
 
 class Solution:
@@ -62,6 +62,29 @@ class Solution:
             
             # 窗口大小为 k 且无重复
             if right >= k - 1 and len(count) == k:
+                max_sum = max(max_sum, current_sum)
+        
+        return max_sum
+
+    from collections import Counter
+
+    def maximumSubarraySum(self, nums: List[int], k: int) -> int:
+        max_sum = 0
+        current_sum = sum(nums[:k])
+        count = Counter(nums[:k])
+        
+        if len(count) == k:
+            max_sum = current_sum
+        
+        for i in range(k, len(nums)):
+            # 滑动窗口
+            current_sum += nums[i] - nums[i - k]
+            count[nums[i]] += 1
+            count[nums[i - k]] -= 1
+            if count[nums[i - k]] == 0:
+                del count[nums[i - k]]
+            
+            if len(count) == k:
                 max_sum = max(max_sum, current_sum)
         
         return max_sum
