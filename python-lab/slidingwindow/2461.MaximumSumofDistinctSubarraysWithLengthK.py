@@ -20,7 +20,7 @@ from typing import List
 
 
 class Solution:
-    def maximumSubarraySum(self, nums: List[int], k: int) -> int:
+    def maximumSubarraySum2(self, nums: List[int], k: int) -> int:
         current_sum = 0
         max_sum = 0
         left = 0
@@ -36,17 +36,34 @@ class Solution:
                     del count[nums[left]]
                 left += 1
 
-            # if right - left + 1 > k:
-            #     current_sum -= nums[left]
-            #     count[nums[left]] -= 1
-            #     if count[nums[left]] == 0:
-            #         del count[nums[left]]
-            #     left += 1
-
             if right - left + 1 == k:
                 if len(count) == k:
                     max_sum = max(max_sum, current_sum)
             
+        return max_sum
+
+    def maximumSubarraySum2(self, nums: List[int], k: int) -> int:
+        current_sum = 0
+        max_sum = 0
+        count = {}
+
+        for right in range(len(nums)):
+            # 加入右边界
+            current_sum += nums[right]
+            count[nums[right]] = count.get(nums[right], 0) + 1
+            
+            # 窗口超过 k 时移除左边界
+            if right >= k:
+                left_val = nums[right - k]
+                current_sum -= left_val
+                count[left_val] -= 1
+                if count[left_val] == 0:
+                    del count[left_val]
+            
+            # 窗口大小为 k 且无重复
+            if right >= k - 1 and len(count) == k:
+                max_sum = max(max_sum, current_sum)
+        
         return max_sum
 
 
