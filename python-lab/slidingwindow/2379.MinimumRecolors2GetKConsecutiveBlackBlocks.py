@@ -60,6 +60,30 @@ class Solution:
             min_operations = min(min_operations, white_count)
         
         return min_operations
+    
+    # 这个更需要掌握，这个更有助于理解滑动窗口
+    def minimumRecolors(self, blocks: str, k: int) -> int:
+        left, right = 0, 0
+        white_count = 0
+        min_ops = float('inf')
+        
+        while right < len(blocks):
+            # 扩展窗口：添加右边界
+            if blocks[right] == 'W':
+                white_count += 1
+            right += 1
+            
+            # 收缩窗口：保持窗口大小为 k
+            if right - left > k:
+                if blocks[left] == 'W':
+                    white_count -= 1
+                left += 1
+            
+            # 当窗口大小等于 k 时，更新答案
+            if right - left == k:
+                min_ops = min(min_ops, white_count)
+        
+        return min_ops
 
 
 if __name__ == "__main__":
