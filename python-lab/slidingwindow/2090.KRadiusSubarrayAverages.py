@@ -34,6 +34,30 @@ class Solution:
                 averages[i] = prev // (2*k + 1)
         return averages
 
+    # 优化版本
+    # 固定窗口大小
+    # 提前做好计算
+    def getAverages1(self, nums: List[int], k: int) -> List[int]:
+        length = len(nums)
+        averages = [-1] * length
+        window_size = 2 * k + 1
+        
+        # 边界检查：数组长度不足
+        if length < window_size:
+            return averages
+        
+        # 初始化第一个窗口的和（从索引0到window_size-1）
+        window_sum = sum(nums[:window_size])
+        averages[k] = window_sum // window_size
+        
+        # 滑动窗口：只遍历有效位置
+        for i in range(k + 1, length - k):
+            # 移除左边界元素，添加右边界新元素
+            window_sum = window_sum - nums[i - k - 1] + nums[i + k]
+            averages[i] = window_sum // window_size
+        
+        return averages
+
 
 if __name__ == "__main__":
     solution = Solution()
