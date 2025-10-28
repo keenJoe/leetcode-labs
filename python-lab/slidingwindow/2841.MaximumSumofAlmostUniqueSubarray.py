@@ -32,30 +32,80 @@ from typing import List
 
 
 class Solution:
-    def maxSum(self, nums: List[int], m: int, k: int) -> int:
+    # 错误❌解法
+    def maxSum1(self, nums: List[int], m: int, k: int) -> int:
         current_sum = 0
         max_sum = 0
-        unique_set = ()
+        # 使用字典，而不是set。因为 set 会导致元素仍旧存在但是被移出
+        unique_set = set()
         left, right = 0, 0
 
-        for i in range(k):
+        for i in range(len(nums)):
             current_sum += nums[i]
             unique_set.add(nums[i])
-            right += 1
+            right = i + 1
 
+            # 边界混乱，要区分 == K 和 > K 的情况
             if right - left == k:
                 if len(unique_set) >= m:
                     max_sum = max(max_sum, current_sum)
+                    # 如果一直都是相同的元素，此时移除，就会导致集合为空
+                    unique_set.remove(nums[left])
                 current_sum -= nums[left]
-                unique_set.remove(nums[left])
                 left += 1
 
         return max_sum
 
+    def maxSum(self, nums: List[int], m: int, k: int) -> int:
+        current_sum = 0
+        max_sum = 0
+        count = {}  # 使用字典记录每个元素出现的次数
+        left = 0
+        
+        for right in range(len(nums)):  # 遍历整个数组
+            # 添加右边界元素
+            current_sum += nums[right]
+            count[nums[right]] = count.get(nums[right], 0) + 1
+            
+            # 当窗口大小超过 k 时，移除左边界
+            if right - left + 1 > k:
+                current_sum -= nums[left]
+                count[nums[left]] -= 1
+                if count[nums[left]] == 0:
+                    del count[nums[left]]  # 计数为0时才删除
+                left += 1
+            
+            # 当窗口大小等于 k 时，检查是否满足条件
+            if right - left + 1 == k:
+                if len(count) >= m:  # 检查不同元素的个数
+                    max_sum = max(max_sum, current_sum)
+        
+        return max_sum
 
 if __name__ == "__main__":
     solution = Solution()
     nums = [2,6,7,3,1,7]
     m = 3
     k = 4
+    print(solution.maxSum(nums, m, k))
+
+    nums = [5,9,9,2,4,5,4]
+    m = 1
+    k = 3
+    print(solution.maxSum(nums, m, k))
+
+    nums = [1,2,1,2,1,2,1]
+    m = 3
+    k = 3
+    print(solution.maxSum(nums, m, k))
+
+    nums = [4,4,4,4]
+    m = 2
+    k = 3
+    print(solution.maxSum(nums, m, k))
+
+
+    nums = [1,1,1,3]
+    m = 2
+    k = 2
     print(solution.maxSum(nums, m, k))
