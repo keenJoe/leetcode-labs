@@ -42,6 +42,32 @@ class Solution:
             
             prev = current
 
+    def flatten(self, root: Optional[TreeNode]) -> None:
+        if not root:
+            return
+        
+        # 先序遍历收集所有节点
+        nodes = []
+        stack = [root]
+        
+        while stack:
+            node = stack.pop()
+            nodes.append(node)
+            
+            # 先压右，再压左
+            if node.right:
+                stack.append(node.right)
+            if node.left:
+                stack.append(node.left)
+        
+        # 重构树
+        for i in range(len(nodes) - 1):
+            nodes[i].left = None
+            nodes[i].right = nodes[i + 1]
+        
+        nodes[-1].left = None
+        nodes[-1].right = None
+
 if __name__ == "__main__":
     solution = Solution()
     root = TreeNode(1)
