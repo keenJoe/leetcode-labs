@@ -48,8 +48,7 @@ class LFUCache:
         self.tail = ListNode(0, 0)
         self.head.next = self.tail
         self.tail.prev = self.head
-        self.size = 0
-        
+       
 
     def get(self, key: int) -> int:
         node = self.cache.get(key)
@@ -59,7 +58,7 @@ class LFUCache:
         # 更新节点的计数器+1
         self.update_count(node)
         # 将当前节点移动到链表头
-        self.move_to_head(node)
+        self.move_to_correct_position(node)
         return node.value
 
     # get 时候会更新使用频率和时间
@@ -76,31 +75,37 @@ class LFUCache:
         if node:
             node.value = value
             self.update_count(node)
-            self.move_to_head(node)
+            self.move_to_correct_position(node)
         else:
+            # 缓存达到容量，需要删除最不经常使用的节点
+            if len(self.cache) >= self.capacity:
+                self.remove_least_frequent_node()
+
             new_node = ListNode(key, value)
             self.cache[key] = new_node
-            self.add_to_head(new_node)
-            self.size += 1
-            if self.size > self.capacity:
-                self.remove_least_frequent_node()
-                self.size -= 1  
+            # 最新的节点，需要移动到链表的头部
+            self.move_to_correct_position(new_node)
+
 
     def remove_least_frequent_node(self) -> None:
-        least_frequent_node = self.head.next
-        while least_frequent_node != self.tail:
-            if least_frequent_node.count < self.head.next.count:
-                break
-            least_frequent_node = least_frequent_node.next
-        self.remove_node(least_frequent_node)
+        # head.next 就是 count 最小且最久未使用的节点
+        to_remove = self.head.next
         
-    # 将当前节点移动到链表头
+        # 从链表中删除
+        self.head.next = to_remove.next
+        to_remove.next.prev = self.head
+    
+        # 从哈希表中删除
+        del self.cache[to_remove.key]
+        
+    # 将当前节点移动到正确的位置
     # 先删除节点：删除即将当前节点和其前后两个节点断开，将其前后两个节点连起来
     # 再将当前节点插入到表头：将当前节点插入到 head 之后，并更新 head 和 head.next 两个节点的相关指针信息
-    def move_to_head(self, node: ListNode) -> None:
-        # 先从当前位置删除
-        node.prev.next = node.next
-        node.next.prev = node.prev
+    def move_to_correct_position(self, node: ListNode) -> None:
+        # 如果节点已在链表中，先删除
+        if node.prev is not None:
+            node.prev.next = node.next
+            node.next.prev = node.prev
         
         # 从 head 开始找合适的位置
         curr = self.head.next
@@ -118,7 +123,13 @@ class LFUCache:
 
     def update_count(self, node: ListNode) -> None:
         node.count += 1
-        
+
+    def remove_node(self, node: ListNode) -> None:
+        node.prev.next = node.next
+        node.next.prev = node.prev
+        node.prev = None
+        node.next = None
+        del self.cache[node.key]
 
 
 # Your LFUCache object will be instantiated and called as such:
