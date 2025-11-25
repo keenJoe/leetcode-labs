@@ -59,6 +59,29 @@ class Solution:
 
         return max_length
 
+    def maximumLengthSubstring1(self, s: str) -> int:
+        if len(s) == 0:
+            return 0
+
+        count = {}
+        left, right = 0, 0
+        max_length = 0
+
+        while right < len(s):
+            count[s[right]] = count.get(s[right], 0) + 1
+
+            if count[s[right]] > 2:
+                while s[left] != s[right]:
+                    count[s[left]] -= 1
+                    left += 1
+                count[s[left]] -= 1
+                left += 1
+
+            max_length = max(max_length, right - left + 1)
+            right += 1
+
+        return max_length
+
 if __name__ == "__main__":
     solution = Solution()
-    print(solution.maximumLengthSubstring("abacabad"))
+    print(solution.maximumLengthSubstring1("abacabad"))
