@@ -40,10 +40,33 @@ class Solution:
                 while nums[left] != nums[right]:
                     count[nums[left]] -= 1
                     left += 1
+
+                # 保证删除开头和结尾的元素
                 count[nums[left]] -= 1
                 left += 1
             
             max_score = max(max_score, sum(nums[left:right+1]))
+        return max_score
+
+
+    def maximumUniqueSubarray1(self, nums: List[int]) -> int:
+        max_score = 0
+        current_sum = 0  # 维护当前窗口的和
+        left = 0
+        seen = set()  # 用 set 更高效
+        
+        for right in range(len(nums)):
+            # 如果有重复元素，收缩左边界，直到完全移除重复元素
+            while nums[right] in seen:
+                seen.remove(nums[left])
+                current_sum -= nums[left]  # 移除左边元素时减去
+                left += 1
+            
+            # 扩展右边界
+            seen.add(nums[right])
+            current_sum += nums[right]  # 添加右边元素时加上
+            max_score = max(max_score, current_sum)
+        
         return max_score
 
 
