@@ -46,6 +46,44 @@ class Solution:
             max_length = max(max_length, right - left + 1)
 
         return max_length
+    
+    # 不需要队列，因为不会改变0的数值
+    def longestOnes1(self, nums: List[int], k: int) -> int:
+        max_length = 0
+        left = 0
+        zero_count = 0  # 记录当前窗口中0的个数
+        
+        for right in range(len(nums)):
+            if nums[right] == 0:
+                zero_count += 1
+            
+            # 如果0的个数超过k，移动左指针
+            while zero_count > k:
+                if nums[left] == 0:
+                    zero_count -= 1
+                left += 1
+            
+            max_length = max(max_length, right - left + 1)
+        
+        return max_length
+
+    def longestOnes2(self, nums: List[int], k: int) -> int:
+        left = 0
+        
+        for right in range(len(nums)):
+            # 遇到0时，k减1（表示用掉一次翻转机会）
+            if nums[right] == 0:
+                k -= 1
+            
+            # 如果k小于0，说明翻转机会用完了
+            if k < 0:
+                # 移动左指针
+                if nums[left] == 0:
+                    k += 1  # 恢复一次翻转机会
+                left += 1
+        
+        # 最终right遍历到末尾，left是窗口起始位置
+        return right - left + 1
 
 if __name__ == "__main__":
     solution = Solution()
