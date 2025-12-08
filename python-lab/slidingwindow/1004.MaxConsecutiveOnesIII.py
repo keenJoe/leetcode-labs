@@ -67,6 +67,7 @@ class Solution:
         
         return max_length
 
+    # 不需要 max_length 因为当 k< 0 时，窗口整体移动，不改变最大值，窗口只会增，不会减
     def longestOnes2(self, nums: List[int], k: int) -> int:
         left = 0
         
