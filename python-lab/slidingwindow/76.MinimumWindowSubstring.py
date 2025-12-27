@@ -77,6 +77,8 @@ class Solution:
         for right in range(len(s)):
             # 扩展右边界
             c = s[right]
+
+            # 不仅要元素能对应上，元素的数量也能对应上
             if c in need:
                 window[c] = window.get(c, 0) + 1
                 if window[c] == need[c]:
@@ -89,7 +91,7 @@ class Solution:
                     min_len = right - left + 1
                     min_start = left
                 
-                # 收缩左边界
+                # 找到一个符合条件的子串后，收缩左边界，继续寻找下一个符合条件的子串
                 d = s[left]
                 left += 1
                 if d in need:
