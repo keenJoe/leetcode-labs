@@ -59,6 +59,17 @@ class Solution:
                 right -= 1
         return max_k
 
+    # 确实是更牛逼的方案
+    def findMaxK_2(self, nums: List[int]) -> int:
+        seen = set(nums)  # 一次性构建 Set
+        max_k = -1
+        
+        for num in nums:
+            if num > 0 and -num in seen:
+                max_k = max(max_k, num)
+        
+        return max_k
+
 if __name__ == '__main__':
     solution = Solution()
     print(solution.findMaxK_1([-1,2,-3,3]))
