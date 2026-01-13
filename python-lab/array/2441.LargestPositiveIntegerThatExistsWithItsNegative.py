@@ -35,8 +35,32 @@ class Solution:
 
         return max_k
 
+    def findMaxK_1(self, nums: List[int]) -> int:
+        max_k = -1
+        
+        sorted_nums = sorted(nums)
+        left = 0
+        right = len(sorted_nums) - 1
+        while left < right:
+            # if sorted_nums[left] + sorted_nums[right] == 0:
+            #     max_k = max(max_k, sorted_nums[right])
+            #     left += 1
+            #     right -= 1
+            # elif sorted_nums[left] + sorted_nums[right] < 0:
+            #     left += 1
+            # else:
+            #     right -= 1
+            total = sorted_nums[left] + sorted_nums[right]
+            if total == 0:
+                return sorted_nums[right]  # 直接返回，不用继续
+            elif total < 0:
+                left += 1
+            else:
+                right -= 1
+        return max_k
+
 if __name__ == '__main__':
     solution = Solution()
-    print(solution.findMaxK([-1,2,-3,3]))
-    print(solution.findMaxK([-1,10,6,7,-7,1]))
-    print(solution.findMaxK([-10,8,6,7,-2,-3]))
+    print(solution.findMaxK_1([-1,2,-3,3]))
+    print(solution.findMaxK_1([-1,10,6,7,-7,1]))
+    print(solution.findMaxK_1([-10,8,6,7,-2,-3]))
