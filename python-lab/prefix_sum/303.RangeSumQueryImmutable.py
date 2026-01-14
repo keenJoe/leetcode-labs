@@ -28,14 +28,31 @@ numArray.sumRange(0, 5); // return -3 ((-2) + 0 + 3 + (-5) + 2 + (-1))
 from typing import List
 
 
-class NumArray:
+# class NumArray:
 
-    num_array: List[int] = []
+#     num_array: List[int] = []
+#     def __init__(self, nums: List[int]):
+#         self.num_array = nums
+
+#     # 前缀和的优化点是什么呢？减少重复计算？
+#     def sumRange(self, left: int, right: int) -> int:
+#         return sum(self.num_array[left:right+1])
+
+class NumArray:
     def __init__(self, nums: List[int]):
-        self.num_array = nums
+        # 构建前缀和数组，prefix[i] = nums[0] + nums[1] + ... + nums[i-1]
+        # prefix[0] = 0，这样处理边界更方便
+        n = len(nums)
+        self.prefix = [0] * (n + 1)
+        for i in range(n):
+            self.prefix[i + 1] = self.prefix[i] + nums[i]
 
     def sumRange(self, left: int, right: int) -> int:
-        return sum(self.num_array[left:right+1])
+        # 区间和 = prefix[right+1] - prefix[left]
+        # 例如：sumRange(2, 5) = prefix[6] - prefix[2]
+        #     = (nums[0]+...+nums[5]) - (nums[0]+nums[1])
+        #     = nums[2] + nums[3] + nums[4] + nums[5]
+        return self.prefix[right + 1] - self.prefix[left]
 
 
 if '__main__' == __name__:
