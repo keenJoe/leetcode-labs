@@ -67,7 +67,7 @@ class Solution:
             # 如果 nums[i] 和 nums[i-1] 奇偶性相同，则是一个"坏对"
             prefix[i] = prefix[i - 1] + (1 if ((nums[i] ^ nums[i - 1]) & 1) == 0 else 0)
         
-        result = []
+        result : List[bool] = []
         for L, R in queries:
             # 检查 [L, R] 范围内是否有"坏对"
             # 坏对的数量 = prefix[R] - prefix[L]
