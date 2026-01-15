@@ -41,7 +41,7 @@ class Solution:
         for i in range(n):
             prefix_xor[i + 1] = prefix_xor[i] ^ arr[i]
 
-        result  = []
+        result : List[int]= []
         for L, R in queries:
             # 异或运算特点：a ^ a = 0, a ^ 0 = a，即相同项会抵消
             xor_value = prefix_xor[R + 1] ^ prefix_xor[L]
